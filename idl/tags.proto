@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package tags;
+
+option go_package = "tags_service";
+
+service TagsService {
+  rpc CreateTags(CreateTagsRequest) returns (CreateTagsResponse);
+  rpc DelTags(DelTagsRequest) returns (DelTagsResponse);
+}
+
+message CreateTagsRequest {
+  uint64 pid = 1;
+  string tags = 2;
+}
+
+message CreateTagsResponse {
+  int64 status = 1;
+  string msg = 2;
+}
+
+message DelTagsRequest {
+  uint64 pid = 1;
+  string tags = 2;
+}
+
+message DelTagsResponse {
+  int64 status = 1;
+  string msg = 2;
+}
