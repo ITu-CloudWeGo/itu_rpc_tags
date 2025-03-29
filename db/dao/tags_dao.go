@@ -1,6 +1,7 @@
 package dao
 
 import (
+	"errors"
 	"fmt"
 	"github.com/ITu-CloudWeGo/itu_rpc_tags/config"
 	"github.com/ITu-CloudWeGo/itu_rpc_tags/db/module"
@@ -27,14 +28,16 @@ func GetTagsDAO() *TagsDao {
 	return instanceDAO
 }
 func CreateDB() *TagsDao {
-	conf := config.Config{}
-	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=disable TimeZone=Asia/Shanghai",
+	conf := config.GetConfig()
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=%s TimeZone=Asia/Shanghai",
 		conf.PostgresSQL.Host,
 		conf.PostgresSQL.User,
 		conf.PostgresSQL.Password,
 		conf.PostgresSQL.DBName,
 		conf.PostgresSQL.Port,
+		conf.PostgresSQL.Sslmode,
 	)
+	fmt.Printf(dsn)
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic(fmt.Sprintf("failed to connect database: %v", err))
@@ -61,10 +64,21 @@ func (dao *TagsDao) DelTags(pid uint64, tag string) error {
 }
 
 func (dao *TagsDao) CheckTags(pid uint64, tag string) (bool, error) {
-
-	exist := dao.db.Where("pid = ? AND tags =?", pid, tag)
-	if exist != nil {
+	var existingTag module.Tags
+	err := dao.db.Where("pid = ? AND tags = ?", pid, tag).First(&existingTag).Error
+	if err == nil {
 		return false, fmt.Errorf("重复tags")
+	}
+	if !errors.Is(err, gorm.ErrRecordNotFound) {
+		return false, err
 	}
 	return true, nil
 }
+
+//	var count int64
+//	dao.db.Model(&module.Tags{}).Where("pid = ? AND tags = ?", pid, tag).Count(&count)
+//	if count > 0 {
+//		return false, fmt.Errorf("重复tags")
+//	}
+//	return true, nil
+//}

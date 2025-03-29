@@ -16,8 +16,11 @@ func (s *TagsServiceImpl) CreateTags(ctx context.Context, req *tags_service.Crea
 	// TODO: Your code here...
 	dao := dao.GetTagsDAO()
 	exist, err := dao.CheckTags(req.Pid, req.Tags)
-	if exist == false {
+	if err != nil {
 		return nil, err
+	}
+	if !exist {
+		return nil, fmt.Errorf("重复tags")
 	}
 	if err := dao.Insert(&module.Tags{
 		Pid:  req.Pid,

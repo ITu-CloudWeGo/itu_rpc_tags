@@ -9,7 +9,7 @@ import (
 
 type Config struct {
 	Registry struct {
-		RegistryAddress string `yaml:"registryAddress"`
+		RegistryAddress string `yaml:"registry_address"`
 		UserName        string `yaml:"username"`
 		PassWord        string `yaml:"password"`
 	} `yaml:"Registry"`
@@ -19,7 +19,8 @@ type Config struct {
 		Password string `yaml:"password"`
 		DBName   string `yaml:"dbname"`
 		Port     int    `yaml:"port"`
-	} `yaml:""`
+		Sslmode  string `yaml:"sslmode"`
+	} `yaml:"PostgresSQL"`
 }
 
 var (

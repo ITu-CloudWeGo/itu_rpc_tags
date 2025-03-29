@@ -1,7 +1,7 @@
 package module
 
 type Tags struct {
-	Pid  uint64 `gorm:"column:pid;primaryKey" json:"tags_id"`
+	Pid  uint64 `gorm:"column:pid;primaryKey" json:"Pid"`
 	Tags string `gorm:"column:tags" json:"tags"`
 }
 
