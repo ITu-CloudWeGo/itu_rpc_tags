@@ -1,7 +1,6 @@
 package dao
 
 import (
-	"errors"
 	"fmt"
 	"github.com/ITu-CloudWeGo/itu_rpc_tags/config"
 	"github.com/ITu-CloudWeGo/itu_rpc_tags/db/module"
@@ -16,6 +15,7 @@ type TidPidDao struct {
 
 type PidTidDaoImpl interface {
 	InsertByPidTid(pidTid *module.PidTid) error
+	GetTidByPid(pid int64) (int64, error)
 }
 
 var (
@@ -57,13 +57,10 @@ func (dao *TidPidDao) InsertByPidTid(pidTid *module.PidTid) error {
 	return dao.db.Create(pidTid).Error
 }
 
-func (dao *TagDao) GetTidByPid(pid int64) (int64, error) {
+func (dao *TidPidDao) GetTidByPid(pid int64) (int64, error) {
 	var getPid module.PidTid
 	err := dao.db.Where("pid = ?", pid).First(&getPid).Error
 	if err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return noExists, nil
-		}
 		return failed, err
 	}
 	return getPid.Pid, nil

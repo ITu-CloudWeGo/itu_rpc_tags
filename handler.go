@@ -57,6 +57,14 @@ func (s *TagsServiceImpl) GetTags(ctx context.Context, req *tags_service.GetTags
 // GetTagID implements the TagsServiceImpl interface.
 func (s *TagsServiceImpl) GetTagID(ctx context.Context, req *tags_service.GetTagIDRequest) (resp *tags_service.GetTagIDResponse, err error) {
 	// TODO: Your code here...
-
-	return
+	PidTidDAO := dao.GetTidPidDao()
+	getPid, err := PidTidDAO.GetTidByPid(req.Pid)
+	if err != nil {
+		return nil, err
+	}
+	return &tags_service.GetTagIDResponse{
+		Status: 200,
+		Msg:    "success",
+		Tid:    getPid,
+	}, nil
 }
