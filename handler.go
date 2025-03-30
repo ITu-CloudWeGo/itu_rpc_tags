@@ -2,49 +2,54 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"github.com/ITu-CloudWeGo/itu_rpc_tags/db/dao"
 	"github.com/ITu-CloudWeGo/itu_rpc_tags/db/module"
 	tags_service "github.com/ITu-CloudWeGo/itu_rpc_tags/kitex_gen/tags_service"
 )
 
+//todo 用户输入传入的是pid和标签string。然后string到标签库中查询。如果存在，返回对应的tid，不存在，则创建，然后返回tid。然后在pidtid表中插入对应的pid和tid，在传出来tid
+
 // TagsServiceImpl implements the last service interface defined in the IDL.
 type TagsServiceImpl struct{}
 
-// CreateTags implements the TagsServiceImpl interface.
-func (s *TagsServiceImpl) CreateTags(ctx context.Context, req *tags_service.CreateTagsRequest) (resp *tags_service.CreateTagsResponse, err error) {
+// PidTidCreate implements the TagsServiceImpl interface.
+func (s *TagsServiceImpl) PidTidCreate(ctx context.Context, req *tags_service.PidTidCreateRequest) (resp *tags_service.PidTidCreateResponse, err error) {
 	// TODO: Your code here...
-	dao := dao.GetTagsDAO()
-	exist, err := dao.CheckTags(req.Pid, req.Tags)
+	PidTidDAO := dao.GetTidPidDao()
+	TagDAO := dao.GetTagDao()
+	//在tag表中检查tag是否存在
+	judgment, err := TagDAO.GetTidByTag(req.Tag)
+	if err != nil {
+		return nil, err
+	} else if judgment == 0 {
+		err = TagDAO.InsertByTag(&module.Tag{})
+		if err != nil {
+			return nil, err
+		}
+	}
+	err = PidTidDAO.InsertByPidTid(&module.PidTid{})
 	if err != nil {
 		return nil, err
 	}
-	if !exist {
-		return nil, fmt.Errorf("重复tags")
-	}
-	if err := dao.Insert(&module.Tags{
-		Pid:  req.Pid,
-		Tags: req.Tags,
-	}); err != nil {
-		return nil, err
-	}
-
-	return &tags_service.CreateTagsResponse{
+	return &tags_service.PidTidCreateResponse{
 		Status: 200,
 		Msg:    "success",
+		Pid:    req.Pid,
+		Tid:    req.Pid,
 	}, nil
 }
 
-// DelTags implements the TagsServiceImpl interface.
-func (s *TagsServiceImpl) DelTags(ctx context.Context, req *tags_service.DelTagsRequest) (resp *tags_service.DelTagsResponse, err error) {
+// GetTags implements the TagsServiceImpl interface.
+func (s *TagsServiceImpl) GetTags(ctx context.Context, req *tags_service.GetTagsRequest) (resp *tags_service.GetTagsResponse, err error) {
 	// TODO: Your code here...
-	dao := dao.GetTagsDAO()
-	if err := dao.DelTags(req.Pid, req.Tags); err != nil {
-		return nil, fmt.Errorf("failed to delete tags: %w", err)
+	TagDAO := dao.GetTagDao()
+	tag, err := TagDAO.GetTagByTid(req.Tid)
+	if err != nil {
+		return nil, err
 	}
-
-	return &tags_service.DelTagsResponse{
+	return &tags_service.GetTagsResponse{
 		Status: 200,
 		Msg:    "success",
+		Tag:    tag,
 	}, nil
 }

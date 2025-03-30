@@ -4,27 +4,33 @@ package tags;
 
 option go_package = "tags_service";
 
+//todo 用户输入传入的是pid和标签string。然后string到标签库中查询。如果存在，返回对应的tid，不存在，则创建，然后返回tid
+
 service TagsService {
-  rpc CreateTags(CreateTagsRequest) returns (CreateTagsResponse);
-  rpc DelTags(DelTagsRequest) returns (DelTagsResponse);
+  rpc PidTidCreate(PidTidCreateRequest) returns (PidTidCreateResponse);
+  rpc GetTags(GetTagsRequest) returns (GetTagsResponse);
 }
 
-message CreateTagsRequest {
+//传入的pid和标签，但是存入的是pid和tid
+message PidTidCreateRequest {
   uint64 pid = 1;
-  string tags = 2;
+  string tag = 2;
 }
 
-message CreateTagsResponse {
+message PidTidCreateResponse {
   int64 status = 1;
   string msg = 2;
+  uint64 pid = 3;
+  uint64 tid = 4;
 }
 
-message DelTagsRequest {
-  uint64 pid = 1;
-  string tags = 2;
+message GetTagsRequest {
+  uint64 tid = 1;
 }
 
-message DelTagsResponse {
+message GetTagsResponse {
   int64 status = 1;
   string msg = 2;
+  string tag = 3;
 }
+

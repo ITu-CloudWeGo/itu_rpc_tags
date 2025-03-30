@@ -11,8 +11,8 @@ import (
 
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.
 type Client interface {
-	CreateTags(ctx context.Context, Req *tags_service.CreateTagsRequest, callOptions ...callopt.Option) (r *tags_service.CreateTagsResponse, err error)
-	DelTags(ctx context.Context, Req *tags_service.DelTagsRequest, callOptions ...callopt.Option) (r *tags_service.DelTagsResponse, err error)
+	PidTidCreate(ctx context.Context, Req *tags_service.PidTidCreateRequest, callOptions ...callopt.Option) (r *tags_service.PidTidCreateResponse, err error)
+	GetTags(ctx context.Context, Req *tags_service.GetTagsRequest, callOptions ...callopt.Option) (r *tags_service.GetTagsResponse, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -44,12 +44,12 @@ type kTagsServiceClient struct {
 	*kClient
 }
 
-func (p *kTagsServiceClient) CreateTags(ctx context.Context, Req *tags_service.CreateTagsRequest, callOptions ...callopt.Option) (r *tags_service.CreateTagsResponse, err error) {
+func (p *kTagsServiceClient) PidTidCreate(ctx context.Context, Req *tags_service.PidTidCreateRequest, callOptions ...callopt.Option) (r *tags_service.PidTidCreateResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.CreateTags(ctx, Req)
+	return p.kClient.PidTidCreate(ctx, Req)
 }
 
-func (p *kTagsServiceClient) DelTags(ctx context.Context, Req *tags_service.DelTagsRequest, callOptions ...callopt.Option) (r *tags_service.DelTagsResponse, err error) {
+func (p *kTagsServiceClient) GetTags(ctx context.Context, Req *tags_service.GetTagsRequest, callOptions ...callopt.Option) (r *tags_service.GetTagsResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.DelTags(ctx, Req)
+	return p.kClient.GetTags(ctx, Req)
 }

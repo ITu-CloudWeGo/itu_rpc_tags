@@ -15,17 +15,17 @@ import (
 var errInvalidMessageType = errors.New("invalid message type for service method handler")
 
 var serviceMethods = map[string]kitex.MethodInfo{
-	"CreateTags": kitex.NewMethodInfo(
-		createTagsHandler,
-		newCreateTagsArgs,
-		newCreateTagsResult,
+	"PidTidCreate": kitex.NewMethodInfo(
+		pidTidCreateHandler,
+		newPidTidCreateArgs,
+		newPidTidCreateResult,
 		false,
 		kitex.WithStreamingMode(kitex.StreamingUnary),
 	),
-	"DelTags": kitex.NewMethodInfo(
-		delTagsHandler,
-		newDelTagsArgs,
-		newDelTagsResult,
+	"GetTags": kitex.NewMethodInfo(
+		getTagsHandler,
+		newGetTagsArgs,
+		newGetTagsResult,
 		false,
 		kitex.WithStreamingMode(kitex.StreamingUnary),
 	),
@@ -95,73 +95,73 @@ func newServiceInfo(hasStreaming bool, keepStreamingMethods bool, keepNonStreami
 	return svcInfo
 }
 
-func createTagsHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+func pidTidCreateHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
 	switch s := arg.(type) {
 	case *streaming.Args:
 		st := s.Stream
-		req := new(tags_service.CreateTagsRequest)
+		req := new(tags_service.PidTidCreateRequest)
 		if err := st.RecvMsg(req); err != nil {
 			return err
 		}
-		resp, err := handler.(tags_service.TagsService).CreateTags(ctx, req)
+		resp, err := handler.(tags_service.TagsService).PidTidCreate(ctx, req)
 		if err != nil {
 			return err
 		}
 		return st.SendMsg(resp)
-	case *CreateTagsArgs:
-		success, err := handler.(tags_service.TagsService).CreateTags(ctx, s.Req)
+	case *PidTidCreateArgs:
+		success, err := handler.(tags_service.TagsService).PidTidCreate(ctx, s.Req)
 		if err != nil {
 			return err
 		}
-		realResult := result.(*CreateTagsResult)
+		realResult := result.(*PidTidCreateResult)
 		realResult.Success = success
 		return nil
 	default:
 		return errInvalidMessageType
 	}
 }
-func newCreateTagsArgs() interface{} {
-	return &CreateTagsArgs{}
+func newPidTidCreateArgs() interface{} {
+	return &PidTidCreateArgs{}
 }
 
-func newCreateTagsResult() interface{} {
-	return &CreateTagsResult{}
+func newPidTidCreateResult() interface{} {
+	return &PidTidCreateResult{}
 }
 
-type CreateTagsArgs struct {
-	Req *tags_service.CreateTagsRequest
+type PidTidCreateArgs struct {
+	Req *tags_service.PidTidCreateRequest
 }
 
-func (p *CreateTagsArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+func (p *PidTidCreateArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
 	if !p.IsSetReq() {
-		p.Req = new(tags_service.CreateTagsRequest)
+		p.Req = new(tags_service.PidTidCreateRequest)
 	}
 	return p.Req.FastRead(buf, _type, number)
 }
 
-func (p *CreateTagsArgs) FastWrite(buf []byte) (n int) {
+func (p *PidTidCreateArgs) FastWrite(buf []byte) (n int) {
 	if !p.IsSetReq() {
 		return 0
 	}
 	return p.Req.FastWrite(buf)
 }
 
-func (p *CreateTagsArgs) Size() (n int) {
+func (p *PidTidCreateArgs) Size() (n int) {
 	if !p.IsSetReq() {
 		return 0
 	}
 	return p.Req.Size()
 }
 
-func (p *CreateTagsArgs) Marshal(out []byte) ([]byte, error) {
+func (p *PidTidCreateArgs) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetReq() {
 		return out, nil
 	}
 	return proto.Marshal(p.Req)
 }
 
-func (p *CreateTagsArgs) Unmarshal(in []byte) error {
-	msg := new(tags_service.CreateTagsRequest)
+func (p *PidTidCreateArgs) Unmarshal(in []byte) error {
+	msg := new(tags_service.PidTidCreateRequest)
 	if err := proto.Unmarshal(in, msg); err != nil {
 		return err
 	}
@@ -169,59 +169,59 @@ func (p *CreateTagsArgs) Unmarshal(in []byte) error {
 	return nil
 }
 
-var CreateTagsArgs_Req_DEFAULT *tags_service.CreateTagsRequest
+var PidTidCreateArgs_Req_DEFAULT *tags_service.PidTidCreateRequest
 
-func (p *CreateTagsArgs) GetReq() *tags_service.CreateTagsRequest {
+func (p *PidTidCreateArgs) GetReq() *tags_service.PidTidCreateRequest {
 	if !p.IsSetReq() {
-		return CreateTagsArgs_Req_DEFAULT
+		return PidTidCreateArgs_Req_DEFAULT
 	}
 	return p.Req
 }
 
-func (p *CreateTagsArgs) IsSetReq() bool {
+func (p *PidTidCreateArgs) IsSetReq() bool {
 	return p.Req != nil
 }
 
-func (p *CreateTagsArgs) GetFirstArgument() interface{} {
+func (p *PidTidCreateArgs) GetFirstArgument() interface{} {
 	return p.Req
 }
 
-type CreateTagsResult struct {
-	Success *tags_service.CreateTagsResponse
+type PidTidCreateResult struct {
+	Success *tags_service.PidTidCreateResponse
 }
 
-var CreateTagsResult_Success_DEFAULT *tags_service.CreateTagsResponse
+var PidTidCreateResult_Success_DEFAULT *tags_service.PidTidCreateResponse
 
-func (p *CreateTagsResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+func (p *PidTidCreateResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
 	if !p.IsSetSuccess() {
-		p.Success = new(tags_service.CreateTagsResponse)
+		p.Success = new(tags_service.PidTidCreateResponse)
 	}
 	return p.Success.FastRead(buf, _type, number)
 }
 
-func (p *CreateTagsResult) FastWrite(buf []byte) (n int) {
+func (p *PidTidCreateResult) FastWrite(buf []byte) (n int) {
 	if !p.IsSetSuccess() {
 		return 0
 	}
 	return p.Success.FastWrite(buf)
 }
 
-func (p *CreateTagsResult) Size() (n int) {
+func (p *PidTidCreateResult) Size() (n int) {
 	if !p.IsSetSuccess() {
 		return 0
 	}
 	return p.Success.Size()
 }
 
-func (p *CreateTagsResult) Marshal(out []byte) ([]byte, error) {
+func (p *PidTidCreateResult) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetSuccess() {
 		return out, nil
 	}
 	return proto.Marshal(p.Success)
 }
 
-func (p *CreateTagsResult) Unmarshal(in []byte) error {
-	msg := new(tags_service.CreateTagsResponse)
+func (p *PidTidCreateResult) Unmarshal(in []byte) error {
+	msg := new(tags_service.PidTidCreateResponse)
 	if err := proto.Unmarshal(in, msg); err != nil {
 		return err
 	}
@@ -229,92 +229,92 @@ func (p *CreateTagsResult) Unmarshal(in []byte) error {
 	return nil
 }
 
-func (p *CreateTagsResult) GetSuccess() *tags_service.CreateTagsResponse {
+func (p *PidTidCreateResult) GetSuccess() *tags_service.PidTidCreateResponse {
 	if !p.IsSetSuccess() {
-		return CreateTagsResult_Success_DEFAULT
+		return PidTidCreateResult_Success_DEFAULT
 	}
 	return p.Success
 }
 
-func (p *CreateTagsResult) SetSuccess(x interface{}) {
-	p.Success = x.(*tags_service.CreateTagsResponse)
+func (p *PidTidCreateResult) SetSuccess(x interface{}) {
+	p.Success = x.(*tags_service.PidTidCreateResponse)
 }
 
-func (p *CreateTagsResult) IsSetSuccess() bool {
+func (p *PidTidCreateResult) IsSetSuccess() bool {
 	return p.Success != nil
 }
 
-func (p *CreateTagsResult) GetResult() interface{} {
+func (p *PidTidCreateResult) GetResult() interface{} {
 	return p.Success
 }
 
-func delTagsHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+func getTagsHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
 	switch s := arg.(type) {
 	case *streaming.Args:
 		st := s.Stream
-		req := new(tags_service.DelTagsRequest)
+		req := new(tags_service.GetTagsRequest)
 		if err := st.RecvMsg(req); err != nil {
 			return err
 		}
-		resp, err := handler.(tags_service.TagsService).DelTags(ctx, req)
+		resp, err := handler.(tags_service.TagsService).GetTags(ctx, req)
 		if err != nil {
 			return err
 		}
 		return st.SendMsg(resp)
-	case *DelTagsArgs:
-		success, err := handler.(tags_service.TagsService).DelTags(ctx, s.Req)
+	case *GetTagsArgs:
+		success, err := handler.(tags_service.TagsService).GetTags(ctx, s.Req)
 		if err != nil {
 			return err
 		}
-		realResult := result.(*DelTagsResult)
+		realResult := result.(*GetTagsResult)
 		realResult.Success = success
 		return nil
 	default:
 		return errInvalidMessageType
 	}
 }
-func newDelTagsArgs() interface{} {
-	return &DelTagsArgs{}
+func newGetTagsArgs() interface{} {
+	return &GetTagsArgs{}
 }
 
-func newDelTagsResult() interface{} {
-	return &DelTagsResult{}
+func newGetTagsResult() interface{} {
+	return &GetTagsResult{}
 }
 
-type DelTagsArgs struct {
-	Req *tags_service.DelTagsRequest
+type GetTagsArgs struct {
+	Req *tags_service.GetTagsRequest
 }
 
-func (p *DelTagsArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+func (p *GetTagsArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
 	if !p.IsSetReq() {
-		p.Req = new(tags_service.DelTagsRequest)
+		p.Req = new(tags_service.GetTagsRequest)
 	}
 	return p.Req.FastRead(buf, _type, number)
 }
 
-func (p *DelTagsArgs) FastWrite(buf []byte) (n int) {
+func (p *GetTagsArgs) FastWrite(buf []byte) (n int) {
 	if !p.IsSetReq() {
 		return 0
 	}
 	return p.Req.FastWrite(buf)
 }
 
-func (p *DelTagsArgs) Size() (n int) {
+func (p *GetTagsArgs) Size() (n int) {
 	if !p.IsSetReq() {
 		return 0
 	}
 	return p.Req.Size()
 }
 
-func (p *DelTagsArgs) Marshal(out []byte) ([]byte, error) {
+func (p *GetTagsArgs) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetReq() {
 		return out, nil
 	}
 	return proto.Marshal(p.Req)
 }
 
-func (p *DelTagsArgs) Unmarshal(in []byte) error {
-	msg := new(tags_service.DelTagsRequest)
+func (p *GetTagsArgs) Unmarshal(in []byte) error {
+	msg := new(tags_service.GetTagsRequest)
 	if err := proto.Unmarshal(in, msg); err != nil {
 		return err
 	}
@@ -322,59 +322,59 @@ func (p *DelTagsArgs) Unmarshal(in []byte) error {
 	return nil
 }
 
-var DelTagsArgs_Req_DEFAULT *tags_service.DelTagsRequest
+var GetTagsArgs_Req_DEFAULT *tags_service.GetTagsRequest
 
-func (p *DelTagsArgs) GetReq() *tags_service.DelTagsRequest {
+func (p *GetTagsArgs) GetReq() *tags_service.GetTagsRequest {
 	if !p.IsSetReq() {
-		return DelTagsArgs_Req_DEFAULT
+		return GetTagsArgs_Req_DEFAULT
 	}
 	return p.Req
 }
 
-func (p *DelTagsArgs) IsSetReq() bool {
+func (p *GetTagsArgs) IsSetReq() bool {
 	return p.Req != nil
 }
 
-func (p *DelTagsArgs) GetFirstArgument() interface{} {
+func (p *GetTagsArgs) GetFirstArgument() interface{} {
 	return p.Req
 }
 
-type DelTagsResult struct {
-	Success *tags_service.DelTagsResponse
+type GetTagsResult struct {
+	Success *tags_service.GetTagsResponse
 }
 
-var DelTagsResult_Success_DEFAULT *tags_service.DelTagsResponse
+var GetTagsResult_Success_DEFAULT *tags_service.GetTagsResponse
 
-func (p *DelTagsResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+func (p *GetTagsResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
 	if !p.IsSetSuccess() {
-		p.Success = new(tags_service.DelTagsResponse)
+		p.Success = new(tags_service.GetTagsResponse)
 	}
 	return p.Success.FastRead(buf, _type, number)
 }
 
-func (p *DelTagsResult) FastWrite(buf []byte) (n int) {
+func (p *GetTagsResult) FastWrite(buf []byte) (n int) {
 	if !p.IsSetSuccess() {
 		return 0
 	}
 	return p.Success.FastWrite(buf)
 }
 
-func (p *DelTagsResult) Size() (n int) {
+func (p *GetTagsResult) Size() (n int) {
 	if !p.IsSetSuccess() {
 		return 0
 	}
 	return p.Success.Size()
 }
 
-func (p *DelTagsResult) Marshal(out []byte) ([]byte, error) {
+func (p *GetTagsResult) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetSuccess() {
 		return out, nil
 	}
 	return proto.Marshal(p.Success)
 }
 
-func (p *DelTagsResult) Unmarshal(in []byte) error {
-	msg := new(tags_service.DelTagsResponse)
+func (p *GetTagsResult) Unmarshal(in []byte) error {
+	msg := new(tags_service.GetTagsResponse)
 	if err := proto.Unmarshal(in, msg); err != nil {
 		return err
 	}
@@ -382,22 +382,22 @@ func (p *DelTagsResult) Unmarshal(in []byte) error {
 	return nil
 }
 
-func (p *DelTagsResult) GetSuccess() *tags_service.DelTagsResponse {
+func (p *GetTagsResult) GetSuccess() *tags_service.GetTagsResponse {
 	if !p.IsSetSuccess() {
-		return DelTagsResult_Success_DEFAULT
+		return GetTagsResult_Success_DEFAULT
 	}
 	return p.Success
 }
 
-func (p *DelTagsResult) SetSuccess(x interface{}) {
-	p.Success = x.(*tags_service.DelTagsResponse)
+func (p *GetTagsResult) SetSuccess(x interface{}) {
+	p.Success = x.(*tags_service.GetTagsResponse)
 }
 
-func (p *DelTagsResult) IsSetSuccess() bool {
+func (p *GetTagsResult) IsSetSuccess() bool {
 	return p.Success != nil
 }
 
-func (p *DelTagsResult) GetResult() interface{} {
+func (p *GetTagsResult) GetResult() interface{} {
 	return p.Success
 }
 
@@ -411,21 +411,21 @@ func newServiceClient(c client.Client) *kClient {
 	}
 }
 
-func (p *kClient) CreateTags(ctx context.Context, Req *tags_service.CreateTagsRequest) (r *tags_service.CreateTagsResponse, err error) {
-	var _args CreateTagsArgs
+func (p *kClient) PidTidCreate(ctx context.Context, Req *tags_service.PidTidCreateRequest) (r *tags_service.PidTidCreateResponse, err error) {
+	var _args PidTidCreateArgs
 	_args.Req = Req
-	var _result CreateTagsResult
-	if err = p.c.Call(ctx, "CreateTags", &_args, &_result); err != nil {
+	var _result PidTidCreateResult
+	if err = p.c.Call(ctx, "PidTidCreate", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) DelTags(ctx context.Context, Req *tags_service.DelTagsRequest) (r *tags_service.DelTagsResponse, err error) {
-	var _args DelTagsArgs
+func (p *kClient) GetTags(ctx context.Context, Req *tags_service.GetTagsRequest) (r *tags_service.GetTagsResponse, err error) {
+	var _args GetTagsArgs
 	_args.Req = Req
-	var _result DelTagsResult
-	if err = p.c.Call(ctx, "DelTags", &_args, &_result); err != nil {
+	var _result GetTagsResult
+	if err = p.c.Call(ctx, "GetTags", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
