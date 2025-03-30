@@ -5,7 +5,7 @@ type PidTid struct {
 	Tid int64 `gorm:"column:tid;not null" json:"Tid"`
 }
 
-type PTTabler interface {
+type PTTable interface {
 	PTTableName() string
 }
 

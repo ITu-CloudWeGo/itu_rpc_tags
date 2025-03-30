@@ -29,6 +29,13 @@ var serviceMethods = map[string]kitex.MethodInfo{
 		false,
 		kitex.WithStreamingMode(kitex.StreamingUnary),
 	),
+	"GetTagID": kitex.NewMethodInfo(
+		getTagIDHandler,
+		newGetTagIDArgs,
+		newGetTagIDResult,
+		false,
+		kitex.WithStreamingMode(kitex.StreamingUnary),
+	),
 }
 
 var (
@@ -401,6 +408,159 @@ func (p *GetTagsResult) GetResult() interface{} {
 	return p.Success
 }
 
+func getTagIDHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	switch s := arg.(type) {
+	case *streaming.Args:
+		st := s.Stream
+		req := new(tags_service.GetTagIDRequest)
+		if err := st.RecvMsg(req); err != nil {
+			return err
+		}
+		resp, err := handler.(tags_service.TagsService).GetTagID(ctx, req)
+		if err != nil {
+			return err
+		}
+		return st.SendMsg(resp)
+	case *GetTagIDArgs:
+		success, err := handler.(tags_service.TagsService).GetTagID(ctx, s.Req)
+		if err != nil {
+			return err
+		}
+		realResult := result.(*GetTagIDResult)
+		realResult.Success = success
+		return nil
+	default:
+		return errInvalidMessageType
+	}
+}
+func newGetTagIDArgs() interface{} {
+	return &GetTagIDArgs{}
+}
+
+func newGetTagIDResult() interface{} {
+	return &GetTagIDResult{}
+}
+
+type GetTagIDArgs struct {
+	Req *tags_service.GetTagIDRequest
+}
+
+func (p *GetTagIDArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetReq() {
+		p.Req = new(tags_service.GetTagIDRequest)
+	}
+	return p.Req.FastRead(buf, _type, number)
+}
+
+func (p *GetTagIDArgs) FastWrite(buf []byte) (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.FastWrite(buf)
+}
+
+func (p *GetTagIDArgs) Size() (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.Size()
+}
+
+func (p *GetTagIDArgs) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetReq() {
+		return out, nil
+	}
+	return proto.Marshal(p.Req)
+}
+
+func (p *GetTagIDArgs) Unmarshal(in []byte) error {
+	msg := new(tags_service.GetTagIDRequest)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Req = msg
+	return nil
+}
+
+var GetTagIDArgs_Req_DEFAULT *tags_service.GetTagIDRequest
+
+func (p *GetTagIDArgs) GetReq() *tags_service.GetTagIDRequest {
+	if !p.IsSetReq() {
+		return GetTagIDArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+
+func (p *GetTagIDArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *GetTagIDArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type GetTagIDResult struct {
+	Success *tags_service.GetTagIDResponse
+}
+
+var GetTagIDResult_Success_DEFAULT *tags_service.GetTagIDResponse
+
+func (p *GetTagIDResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetSuccess() {
+		p.Success = new(tags_service.GetTagIDResponse)
+	}
+	return p.Success.FastRead(buf, _type, number)
+}
+
+func (p *GetTagIDResult) FastWrite(buf []byte) (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.FastWrite(buf)
+}
+
+func (p *GetTagIDResult) Size() (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.Size()
+}
+
+func (p *GetTagIDResult) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetSuccess() {
+		return out, nil
+	}
+	return proto.Marshal(p.Success)
+}
+
+func (p *GetTagIDResult) Unmarshal(in []byte) error {
+	msg := new(tags_service.GetTagIDResponse)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Success = msg
+	return nil
+}
+
+func (p *GetTagIDResult) GetSuccess() *tags_service.GetTagIDResponse {
+	if !p.IsSetSuccess() {
+		return GetTagIDResult_Success_DEFAULT
+	}
+	return p.Success
+}
+
+func (p *GetTagIDResult) SetSuccess(x interface{}) {
+	p.Success = x.(*tags_service.GetTagIDResponse)
+}
+
+func (p *GetTagIDResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *GetTagIDResult) GetResult() interface{} {
+	return p.Success
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -426,6 +586,16 @@ func (p *kClient) GetTags(ctx context.Context, Req *tags_service.GetTagsRequest)
 	_args.Req = Req
 	var _result GetTagsResult
 	if err = p.c.Call(ctx, "GetTags", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) GetTagID(ctx context.Context, Req *tags_service.GetTagIDRequest) (r *tags_service.GetTagIDResponse, err error) {
+	var _args GetTagIDArgs
+	_args.Req = Req
+	var _result GetTagIDResult
+	if err = p.c.Call(ctx, "GetTagID", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

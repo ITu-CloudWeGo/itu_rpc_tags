@@ -172,6 +172,76 @@ func (x *GetTagsResponse) fastReadField3(buf []byte, _type int8) (offset int, er
 	return offset, err
 }
 
+func (x *GetTagIDRequest) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
+	switch number {
+	case 1:
+		offset, err = x.fastReadField1(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	default:
+		offset, err = fastpb.Skip(buf, _type, number)
+		if err != nil {
+			goto SkipFieldError
+		}
+	}
+	return offset, nil
+SkipFieldError:
+	return offset, fmt.Errorf("%T cannot parse invalid wire-format data, error: %s", x, err)
+ReadFieldError:
+	return offset, fmt.Errorf("%T read field %d '%s' error: %s", x, number, fieldIDToName_GetTagIDRequest[number], err)
+}
+
+func (x *GetTagIDRequest) fastReadField1(buf []byte, _type int8) (offset int, err error) {
+	x.Pid, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
+func (x *GetTagIDResponse) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
+	switch number {
+	case 1:
+		offset, err = x.fastReadField1(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 2:
+		offset, err = x.fastReadField2(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 3:
+		offset, err = x.fastReadField3(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	default:
+		offset, err = fastpb.Skip(buf, _type, number)
+		if err != nil {
+			goto SkipFieldError
+		}
+	}
+	return offset, nil
+SkipFieldError:
+	return offset, fmt.Errorf("%T cannot parse invalid wire-format data, error: %s", x, err)
+ReadFieldError:
+	return offset, fmt.Errorf("%T read field %d '%s' error: %s", x, number, fieldIDToName_GetTagIDResponse[number], err)
+}
+
+func (x *GetTagIDResponse) fastReadField1(buf []byte, _type int8) (offset int, err error) {
+	x.Status, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
+func (x *GetTagIDResponse) fastReadField2(buf []byte, _type int8) (offset int, err error) {
+	x.Msg, offset, err = fastpb.ReadString(buf, _type)
+	return offset, err
+}
+
+func (x *GetTagIDResponse) fastReadField3(buf []byte, _type int8) (offset int, err error) {
+	x.Tid, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
 func (x *PidTidCreateRequest) FastWrite(buf []byte) (offset int) {
 	if x == nil {
 		return offset
@@ -287,6 +357,56 @@ func (x *GetTagsResponse) fastWriteField3(buf []byte) (offset int) {
 		return offset
 	}
 	offset += fastpb.WriteString(buf[offset:], 3, x.GetTag())
+	return offset
+}
+
+func (x *GetTagIDRequest) FastWrite(buf []byte) (offset int) {
+	if x == nil {
+		return offset
+	}
+	offset += x.fastWriteField1(buf[offset:])
+	return offset
+}
+
+func (x *GetTagIDRequest) fastWriteField1(buf []byte) (offset int) {
+	if x.Pid == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 1, x.GetPid())
+	return offset
+}
+
+func (x *GetTagIDResponse) FastWrite(buf []byte) (offset int) {
+	if x == nil {
+		return offset
+	}
+	offset += x.fastWriteField1(buf[offset:])
+	offset += x.fastWriteField2(buf[offset:])
+	offset += x.fastWriteField3(buf[offset:])
+	return offset
+}
+
+func (x *GetTagIDResponse) fastWriteField1(buf []byte) (offset int) {
+	if x.Status == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 1, x.GetStatus())
+	return offset
+}
+
+func (x *GetTagIDResponse) fastWriteField2(buf []byte) (offset int) {
+	if x.Msg == "" {
+		return offset
+	}
+	offset += fastpb.WriteString(buf[offset:], 2, x.GetMsg())
+	return offset
+}
+
+func (x *GetTagIDResponse) fastWriteField3(buf []byte) (offset int) {
+	if x.Tid == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 3, x.GetTid())
 	return offset
 }
 
@@ -408,6 +528,56 @@ func (x *GetTagsResponse) sizeField3() (n int) {
 	return n
 }
 
+func (x *GetTagIDRequest) Size() (n int) {
+	if x == nil {
+		return n
+	}
+	n += x.sizeField1()
+	return n
+}
+
+func (x *GetTagIDRequest) sizeField1() (n int) {
+	if x.Pid == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(1, x.GetPid())
+	return n
+}
+
+func (x *GetTagIDResponse) Size() (n int) {
+	if x == nil {
+		return n
+	}
+	n += x.sizeField1()
+	n += x.sizeField2()
+	n += x.sizeField3()
+	return n
+}
+
+func (x *GetTagIDResponse) sizeField1() (n int) {
+	if x.Status == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(1, x.GetStatus())
+	return n
+}
+
+func (x *GetTagIDResponse) sizeField2() (n int) {
+	if x.Msg == "" {
+		return n
+	}
+	n += fastpb.SizeString(2, x.GetMsg())
+	return n
+}
+
+func (x *GetTagIDResponse) sizeField3() (n int) {
+	if x.Tid == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(3, x.GetTid())
+	return n
+}
+
 var fieldIDToName_PidTidCreateRequest = map[int32]string{
 	1: "Pid",
 	2: "Tag",
@@ -428,4 +598,14 @@ var fieldIDToName_GetTagsResponse = map[int32]string{
 	1: "Status",
 	2: "Msg",
 	3: "Tag",
+}
+
+var fieldIDToName_GetTagIDRequest = map[int32]string{
+	1: "Pid",
+}
+
+var fieldIDToName_GetTagIDResponse = map[int32]string{
+	1: "Status",
+	2: "Msg",
+	3: "Tid",
 }

@@ -5,10 +5,10 @@ type Tag struct {
 	Tag string `gorm:"column:tags" json:"tags"`
 }
 
-type Tabler interface {
-	TableName() string
+type TagTable interface {
+	TagTableName() string
 }
 
-func (t *Tag) TableName() string {
+func (t *Tag) TagTableName() string {
 	return "tag"
 }

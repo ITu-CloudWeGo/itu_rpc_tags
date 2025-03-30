@@ -53,3 +53,10 @@ func (s *TagsServiceImpl) GetTags(ctx context.Context, req *tags_service.GetTags
 		Tag:    tag,
 	}, nil
 }
+
+// GetTagID implements the TagsServiceImpl interface.
+func (s *TagsServiceImpl) GetTagID(ctx context.Context, req *tags_service.GetTagIDRequest) (resp *tags_service.GetTagIDResponse, err error) {
+	// TODO: Your code here...
+
+	return
+}

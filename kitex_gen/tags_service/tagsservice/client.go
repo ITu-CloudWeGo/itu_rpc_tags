@@ -13,6 +13,7 @@ import (
 type Client interface {
 	PidTidCreate(ctx context.Context, Req *tags_service.PidTidCreateRequest, callOptions ...callopt.Option) (r *tags_service.PidTidCreateResponse, err error)
 	GetTags(ctx context.Context, Req *tags_service.GetTagsRequest, callOptions ...callopt.Option) (r *tags_service.GetTagsResponse, err error)
+	GetTagID(ctx context.Context, Req *tags_service.GetTagIDRequest, callOptions ...callopt.Option) (r *tags_service.GetTagIDResponse, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -52,4 +53,9 @@ func (p *kTagsServiceClient) PidTidCreate(ctx context.Context, Req *tags_service
 func (p *kTagsServiceClient) GetTags(ctx context.Context, Req *tags_service.GetTagsRequest, callOptions ...callopt.Option) (r *tags_service.GetTagsResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.GetTags(ctx, Req)
+}
+
+func (p *kTagsServiceClient) GetTagID(ctx context.Context, Req *tags_service.GetTagIDRequest, callOptions ...callopt.Option) (r *tags_service.GetTagIDResponse, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.GetTagID(ctx, Req)
 }
