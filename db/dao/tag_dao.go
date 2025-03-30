@@ -17,13 +17,15 @@ type TagDao struct {
 
 type TagDaoImpl interface {
 	InsertByTag(tag *module.Tag) error
-	GetTidByTag(tag string) (uint64, error)
-	GetTagByTid(tid uint64) (string, error)
+	GetTidByTag(tag string) (int64, error)
+	GetTagByTid(tid int64) (string, error)
 }
 
 var (
 	instanceTagDAO *TagDao
 	onceTagDAO     sync.Once
+	noExists       int64 = -1
+	failed         int64 = 0
 )
 
 func GetTagDao() *TagDao {
@@ -61,20 +63,19 @@ func (dao *TagDao) InsertByTag(tag *module.Tag) error {
 	return dao.db.Create(tag).Error
 }
 
-func (dao *TagDao) GetTidByTag(tag string) (uint64, error) {
+func (dao *TagDao) GetTidByTag(tag string) (int64, error) {
 	var existingTag module.Tag
 	err := dao.db.Where("tag = ?", tag).First(&existingTag).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-
-			return 0, nil
+			return noExists, nil
 		}
-		return -1, err
+		return failed, err
 	}
 	return existingTag.Tid, nil
 }
 
-func (dao *TagDao) GetTagByTid(tid uint64) (string, error) {
+func (dao *TagDao) GetTagByTid(tid int64) (string, error) {
 	var existingTag module.Tag
 	err := dao.db.Where("tid = ?", tid).First(&existingTag).Error
 	if err != nil {

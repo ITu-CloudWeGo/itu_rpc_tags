@@ -38,7 +38,7 @@ ReadFieldError:
 }
 
 func (x *PidTidCreateRequest) fastReadField1(buf []byte, _type int8) (offset int, err error) {
-	x.Pid, offset, err = fastpb.ReadUint64(buf, _type)
+	x.Pid, offset, err = fastpb.ReadInt64(buf, _type)
 	return offset, err
 }
 
@@ -93,12 +93,12 @@ func (x *PidTidCreateResponse) fastReadField2(buf []byte, _type int8) (offset in
 }
 
 func (x *PidTidCreateResponse) fastReadField3(buf []byte, _type int8) (offset int, err error) {
-	x.Pid, offset, err = fastpb.ReadUint64(buf, _type)
+	x.Pid, offset, err = fastpb.ReadInt64(buf, _type)
 	return offset, err
 }
 
 func (x *PidTidCreateResponse) fastReadField4(buf []byte, _type int8) (offset int, err error) {
-	x.Tid, offset, err = fastpb.ReadUint64(buf, _type)
+	x.Tid, offset, err = fastpb.ReadInt64(buf, _type)
 	return offset, err
 }
 
@@ -123,7 +123,7 @@ ReadFieldError:
 }
 
 func (x *GetTagsRequest) fastReadField1(buf []byte, _type int8) (offset int, err error) {
-	x.Tid, offset, err = fastpb.ReadUint64(buf, _type)
+	x.Tid, offset, err = fastpb.ReadInt64(buf, _type)
 	return offset, err
 }
 
@@ -185,7 +185,7 @@ func (x *PidTidCreateRequest) fastWriteField1(buf []byte) (offset int) {
 	if x.Pid == 0 {
 		return offset
 	}
-	offset += fastpb.WriteUint64(buf[offset:], 1, x.GetPid())
+	offset += fastpb.WriteInt64(buf[offset:], 1, x.GetPid())
 	return offset
 }
 
@@ -228,7 +228,7 @@ func (x *PidTidCreateResponse) fastWriteField3(buf []byte) (offset int) {
 	if x.Pid == 0 {
 		return offset
 	}
-	offset += fastpb.WriteUint64(buf[offset:], 3, x.GetPid())
+	offset += fastpb.WriteInt64(buf[offset:], 3, x.GetPid())
 	return offset
 }
 
@@ -236,7 +236,7 @@ func (x *PidTidCreateResponse) fastWriteField4(buf []byte) (offset int) {
 	if x.Tid == 0 {
 		return offset
 	}
-	offset += fastpb.WriteUint64(buf[offset:], 4, x.GetTid())
+	offset += fastpb.WriteInt64(buf[offset:], 4, x.GetTid())
 	return offset
 }
 
@@ -252,7 +252,7 @@ func (x *GetTagsRequest) fastWriteField1(buf []byte) (offset int) {
 	if x.Tid == 0 {
 		return offset
 	}
-	offset += fastpb.WriteUint64(buf[offset:], 1, x.GetTid())
+	offset += fastpb.WriteInt64(buf[offset:], 1, x.GetTid())
 	return offset
 }
 
@@ -303,7 +303,7 @@ func (x *PidTidCreateRequest) sizeField1() (n int) {
 	if x.Pid == 0 {
 		return n
 	}
-	n += fastpb.SizeUint64(1, x.GetPid())
+	n += fastpb.SizeInt64(1, x.GetPid())
 	return n
 }
 
@@ -346,7 +346,7 @@ func (x *PidTidCreateResponse) sizeField3() (n int) {
 	if x.Pid == 0 {
 		return n
 	}
-	n += fastpb.SizeUint64(3, x.GetPid())
+	n += fastpb.SizeInt64(3, x.GetPid())
 	return n
 }
 
@@ -354,7 +354,7 @@ func (x *PidTidCreateResponse) sizeField4() (n int) {
 	if x.Tid == 0 {
 		return n
 	}
-	n += fastpb.SizeUint64(4, x.GetTid())
+	n += fastpb.SizeInt64(4, x.GetTid())
 	return n
 }
 
@@ -370,7 +370,7 @@ func (x *GetTagsRequest) sizeField1() (n int) {
 	if x.Tid == 0 {
 		return n
 	}
-	n += fastpb.SizeUint64(1, x.GetTid())
+	n += fastpb.SizeInt64(1, x.GetTid())
 	return n
 }
 

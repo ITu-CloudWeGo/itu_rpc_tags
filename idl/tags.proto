@@ -13,19 +13,19 @@ service TagsService {
 
 //传入的pid和标签，但是存入的是pid和tid
 message PidTidCreateRequest {
-  uint64 pid = 1;
+  int64 pid = 1;
   string tag = 2;
 }
 
 message PidTidCreateResponse {
   int64 status = 1;
   string msg = 2;
-  uint64 pid = 3;
-  uint64 tid = 4;
+  int64 pid = 3;
+  int64 tid = 4;
 }
 
 message GetTagsRequest {
-  uint64 tid = 1;
+  int64 tid = 1;
 }
 
 message GetTagsResponse {

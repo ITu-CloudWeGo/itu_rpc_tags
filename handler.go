@@ -21,7 +21,7 @@ func (s *TagsServiceImpl) PidTidCreate(ctx context.Context, req *tags_service.Pi
 	judgment, err := TagDAO.GetTidByTag(req.Tag)
 	if err != nil {
 		return nil, err
-	} else if judgment == 0 {
+	} else if judgment == -1 {
 		err = TagDAO.InsertByTag(&module.Tag{})
 		if err != nil {
 			return nil, err

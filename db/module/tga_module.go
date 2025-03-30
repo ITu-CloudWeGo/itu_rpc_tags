@@ -1,7 +1,7 @@
 package module
 
 type Tag struct {
-	Tid uint64 `gorm:"column:pid;primaryKey;autoIncrement" json:"Pid"`
+	Tid int64  `gorm:"column:pid;primaryKey;autoIncrement" json:"Pid"`
 	Tag string `gorm:"column:tags" json:"tags"`
 }
 
