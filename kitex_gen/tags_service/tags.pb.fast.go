@@ -238,7 +238,16 @@ func (x *GetTagIDResponse) fastReadField2(buf []byte, _type int8) (offset int, e
 }
 
 func (x *GetTagIDResponse) fastReadField3(buf []byte, _type int8) (offset int, err error) {
-	x.Tid, offset, err = fastpb.ReadInt64(buf, _type)
+	offset, err = fastpb.ReadList(buf, _type,
+		func(buf []byte, _type int8) (n int, err error) {
+			var v int64
+			v, offset, err = fastpb.ReadInt64(buf, _type)
+			if err != nil {
+				return offset, err
+			}
+			x.Tid = append(x.Tid, v)
+			return offset, err
+		})
 	return offset, err
 }
 
@@ -403,10 +412,15 @@ func (x *GetTagIDResponse) fastWriteField2(buf []byte) (offset int) {
 }
 
 func (x *GetTagIDResponse) fastWriteField3(buf []byte) (offset int) {
-	if x.Tid == 0 {
+	if len(x.Tid) == 0 {
 		return offset
 	}
-	offset += fastpb.WriteInt64(buf[offset:], 3, x.GetTid())
+	offset += fastpb.WriteListPacked(buf[offset:], 3, len(x.GetTid()),
+		func(buf []byte, numTagOrKey, numIdxOrVal int32) int {
+			offset := 0
+			offset += fastpb.WriteInt64(buf[offset:], numTagOrKey, x.GetTid()[numIdxOrVal])
+			return offset
+		})
 	return offset
 }
 
@@ -571,10 +585,15 @@ func (x *GetTagIDResponse) sizeField2() (n int) {
 }
 
 func (x *GetTagIDResponse) sizeField3() (n int) {
-	if x.Tid == 0 {
+	if len(x.Tid) == 0 {
 		return n
 	}
-	n += fastpb.SizeInt64(3, x.GetTid())
+	n += fastpb.SizeListPacked(3, len(x.GetTid()),
+		func(numTagOrKey, numIdxOrVal int32) int {
+			n := 0
+			n += fastpb.SizeInt64(numTagOrKey, x.GetTid()[numIdxOrVal])
+			return n
+		})
 	return n
 }
 

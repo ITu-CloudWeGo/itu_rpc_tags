@@ -42,5 +42,5 @@ message GetTagIDRequest{
 message GetTagIDResponse{
   int64 status = 1;
   string msg = 2;
-  int64 tid = 3;
+  repeated int64 tid = 3;
 }

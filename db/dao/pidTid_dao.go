@@ -57,11 +57,15 @@ func (dao *TidPidDao) InsertByPidTid(pidTid *module.PidTid) error {
 	return dao.db.Create(pidTid).Error
 }
 
-func (dao *TidPidDao) GetTidByPid(pid int64) (int64, error) {
-	var getPid module.PidTid
-	err := dao.db.Where("pid = ?", pid).First(&getPid).Error
+func (dao *TidPidDao) GetTidByPid(pid int64) ([]int64, error) {
+	var pidTids []module.PidTid
+	err := dao.db.Where("pid = ?", pid).Find(&pidTids).Error
 	if err != nil {
-		return failed, err
+		return nil, err
 	}
-	return getPid.Pid, nil
+	tids := make([]int64, 0, len(pidTids))
+	for _, pidTid := range pidTids {
+		tids = append(tids, pidTid.Tid)
+	}
+	return tids, nil
 }
