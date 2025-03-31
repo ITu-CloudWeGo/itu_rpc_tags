@@ -32,12 +32,13 @@ func GetTidPidDao() *TidPidDao {
 
 func CreatePidTidDB() *TidPidDao {
 	conf := config.Config{}
-	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=disable TimeZone=Asia/Shanghai",
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=%s TimeZone=Asia/Shanghai",
 		conf.PostgresSQL.Host,
 		conf.PostgresSQL.User,
 		conf.PostgresSQL.Password,
 		conf.PostgresSQL.DBName,
 		conf.PostgresSQL.Port,
+		conf.PostgresSQL.SSLMode,
 	)
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {

@@ -43,7 +43,7 @@ func CreateTagDB() *TagDao {
 		conf.PostgresSQL.Password,
 		conf.PostgresSQL.DBName,
 		conf.PostgresSQL.Port,
-		conf.PostgresSQL.Sslmode,
+		conf.PostgresSQL.SSLMode,
 	)
 	fmt.Printf(dsn)
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
