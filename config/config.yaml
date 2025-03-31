@@ -19,5 +19,5 @@ PostgresSQL:
   Password: 123456
   Dbname: ITU
   Port: 5432
-  sslmode: disable
+  SSLMode: disable
 
