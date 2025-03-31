@@ -24,11 +24,11 @@ type Config struct {
 		Password        string   `yaml:"Password"`
 	} `yaml:"Registry"`
 	PostgresSQL struct {
-		Host     string `yaml:"Host: 1"`
-		User     string `yaml:"User: p"`
-		Password string `yaml:"Passwor"`
-		DBName   string `yaml:"Dbname:"`
-		Port     int    `yaml:"Port: 5"`
+		Host     string `yaml:"Host"`
+		User     string `yaml:"User"`
+		Password string `yaml:"Password"`
+		DBName   string `yaml:"Dbname"`
+		Port     int    `yaml:"Port"`
 		Sslmode  string `yaml:"sslmode"`
 	} `yaml:"PostgresSQL"`
 }

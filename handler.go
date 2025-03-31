@@ -69,5 +69,4 @@ func (s *TagsServiceImpl) GetTagIDsWithPid(ctx context.Context, req *tags_servic
 		Msg:    "success",
 		Tids:   getTid,
 	}, nil
-
 }
