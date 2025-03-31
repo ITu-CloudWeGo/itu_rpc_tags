@@ -1,5 +1,5 @@
 Kitex:
-  Service: "tags_service"
+  Service: "tag_service"
   Address: "0.0.0.0:8888"
   LogLevel: info
   LogFileName: "log/kitex.log"

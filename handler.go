@@ -65,6 +65,6 @@ func (s *TagsServiceImpl) GetTagID(ctx context.Context, req *tags_service.GetTag
 	return &tags_service.GetTagIDResponse{
 		Status: 200,
 		Msg:    "success",
-		Tid:    []int64{getTid},
+		Tid:    getTid,
 	}, nil
 }
