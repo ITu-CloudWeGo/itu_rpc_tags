@@ -1,4 +1,4 @@
 kitexinfo:
-   ServiceName: 'tags_service'
+   ServiceName: 'tag_service'
    ToolVersion: 'v0.12.3'
 
