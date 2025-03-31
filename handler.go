@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"github.com/ITu-CloudWeGo/itu_rpc_tags/db/dao"
-	"github.com/ITu-CloudWeGo/itu_rpc_tags/db/module"
+	"github.com/ITu-CloudWeGo/itu_rpc_tags/db/model"
 	tags_service "github.com/ITu-CloudWeGo/itu_rpc_tags/kitex_gen/tags_service"
 )
 
@@ -22,12 +22,12 @@ func (s *TagsServiceImpl) PidTidCreate(ctx context.Context, req *tags_service.Pi
 	if err != nil {
 		return nil, err
 	} else if judgment == -1 {
-		err = TagDAO.InsertByTag(&module.Tag{})
+		err = TagDAO.InsertByTag(&model.Tag{})
 		if err != nil {
 			return nil, err
 		}
 	}
-	err = PidTidDAO.InsertByPidTid(&module.PidTid{})
+	err = PidTidDAO.InsertByPidTid(&model.PidTid{})
 	if err != nil {
 		return nil, err
 	}
@@ -39,23 +39,25 @@ func (s *TagsServiceImpl) PidTidCreate(ctx context.Context, req *tags_service.Pi
 	}, nil
 }
 
-// GetTags implements the TagsServiceImpl interface.
-func (s *TagsServiceImpl) GetTags(ctx context.Context, req *tags_service.GetTagsRequest) (resp *tags_service.GetTagsResponse, err error) {
+// GetTag implements the TagsServiceImpl interface.
+func (s *TagsServiceImpl) GetTag(ctx context.Context, req *tags_service.GetTagRequest) (resp *tags_service.GetTagResponse, err error) {
 	// TODO: Your code here...
+
 	TagDAO := dao.GetTagDao()
 	tag, err := TagDAO.GetTagByTid(req.Tid)
 	if err != nil {
 		return nil, err
 	}
-	return &tags_service.GetTagsResponse{
+	return &tags_service.GetTagResponse{
 		Status: 200,
 		Msg:    "success",
 		Tag:    tag,
 	}, nil
+
 }
 
-// GetTagID implements the TagsServiceImpl interface.
-func (s *TagsServiceImpl) GetTagID(ctx context.Context, req *tags_service.GetTagIDRequest) (resp *tags_service.GetTagIDResponse, err error) {
+// GetTagIDsWithPid implements the TagsServiceImpl interface.
+func (s *TagsServiceImpl) GetTagIDsWithPid(ctx context.Context, req *tags_service.GetTagIDRequest) (resp *tags_service.GetTagIDResponse, err error) {
 	// TODO: Your code here...
 	PidTidDAO := dao.GetTidPidDao()
 	getTid, err := PidTidDAO.GetTidByPid(req.Pid)
@@ -65,6 +67,7 @@ func (s *TagsServiceImpl) GetTagID(ctx context.Context, req *tags_service.GetTag
 	return &tags_service.GetTagIDResponse{
 		Status: 200,
 		Msg:    "success",
-		Tid:    getTid,
+		Tids:   getTid,
 	}, nil
+
 }

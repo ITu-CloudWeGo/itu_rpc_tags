@@ -81,7 +81,7 @@ func loadConfig() *Config {
 	// Registry
 	registryAddrEnv := os.Getenv("REGISTRY_ADDR")
 	if registryAddrEnv != "" {
-		conf.Registry.RegistryAddress = registryAddrEnv
+		conf.Registry.RegistryAddress = []string{registryAddrEnv}
 	}
 	registryUserNameEnv := os.Getenv("REGISTRY_USERNAME")
 	if registryUserNameEnv != "" {

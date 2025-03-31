@@ -8,8 +8,8 @@ option go_package = "tags_service";
 
 service TagsService {
   rpc PidTidCreate(PidTidCreateRequest) returns (PidTidCreateResponse);
-  rpc GetTags(GetTagsRequest) returns (GetTagsResponse);
-  rpc GetTagID(GetTagIDRequest) returns (GetTagIDResponse);
+  rpc GetTag(GetTagRequest) returns (GetTagResponse);
+  rpc GetTagIDsWithPid(GetTagIDRequest) returns (GetTagIDResponse);
 }
 
 //传入的pid和标签，但是存入的是pid和tid
@@ -25,11 +25,11 @@ message PidTidCreateResponse {
   int64 tid = 4;
 }
 
-message GetTagsRequest {
+message GetTagRequest {
   int64 tid = 1;
 }
 
-message GetTagsResponse {
+message GetTagResponse {
   int64 status = 1;
   string msg = 2;
   string tag = 3;
@@ -42,5 +42,5 @@ message GetTagIDRequest{
 message GetTagIDResponse{
   int64 status = 1;
   string msg = 2;
-  repeated int64 tid = 3;
+  repeated int64 tids = 3;
 }

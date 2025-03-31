@@ -1,4 +1,4 @@
-package module
+package model
 
 type PidTid struct {
 	Pid int64 `gorm:"column:pid;primary_key" json:"Pid"`

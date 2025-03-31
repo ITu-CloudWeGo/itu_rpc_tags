@@ -3,7 +3,7 @@ package dao
 import (
 	"fmt"
 	"github.com/ITu-CloudWeGo/itu_rpc_tags/config"
-	"github.com/ITu-CloudWeGo/itu_rpc_tags/db/module"
+	"github.com/ITu-CloudWeGo/itu_rpc_tags/db/model"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"sync"
@@ -14,7 +14,7 @@ type TidPidDao struct {
 }
 
 type PidTidDaoImpl interface {
-	InsertByPidTid(pidTid *module.PidTid) error
+	InsertByPidTid(pidTid *model.PidTid) error
 	GetTidByPid(pid int64) (int64, error)
 }
 
@@ -43,7 +43,7 @@ func CreatePidTidDB() *TidPidDao {
 	if err != nil {
 		panic(fmt.Sprintf("failed to connect database: %v", err))
 	}
-	err = db.AutoMigrate(&module.PidTid{})
+	err = db.AutoMigrate(&model.PidTid{})
 	if err != nil {
 		panic(fmt.Sprintf("failed to migrate database: %v", err))
 	}
@@ -53,12 +53,12 @@ func CreatePidTidDB() *TidPidDao {
 	return instancePidTidDAO
 }
 
-func (dao *TidPidDao) InsertByPidTid(pidTid *module.PidTid) error {
+func (dao *TidPidDao) InsertByPidTid(pidTid *model.PidTid) error {
 	return dao.db.Create(pidTid).Error
 }
 
 func (dao *TidPidDao) GetTidByPid(pid int64) ([]int64, error) {
-	var pidTids []module.PidTid
+	var pidTids []model.PidTid
 	err := dao.db.Where("pid = ?", pid).Find(&pidTids).Error
 	if err != nil {
 		return nil, err

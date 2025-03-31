@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/ITu-CloudWeGo/itu_rpc_tags/config"
-	"github.com/ITu-CloudWeGo/itu_rpc_tags/db/module"
+	"github.com/ITu-CloudWeGo/itu_rpc_tags/db/model"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 
@@ -16,7 +16,7 @@ type TagDao struct {
 }
 
 type TagDaoImpl interface {
-	InsertByTag(tag *module.Tag) error
+	InsertByTag(tag *model.Tag) error
 	GetTidByTag(tag string) (int64, error)
 	GetTagByTid(tid int64) (string, error)
 }
@@ -50,7 +50,7 @@ func CreateTagDB() *TagDao {
 	if err != nil {
 		panic(fmt.Sprintf("failed to connect database: %v", err))
 	}
-	err = db.AutoMigrate(&module.Tag{})
+	err = db.AutoMigrate(&model.Tag{})
 	if err != nil {
 		panic(fmt.Sprintf("failed to migrate database: %v", err))
 	}
@@ -59,12 +59,12 @@ func CreateTagDB() *TagDao {
 	}
 	return instanceTagDAO
 }
-func (dao *TagDao) InsertByTag(tag *module.Tag) error {
+func (dao *TagDao) InsertByTag(tag *model.Tag) error {
 	return dao.db.Create(tag).Error
 }
 
 func (dao *TagDao) GetTidByTag(tag string) (int64, error) {
-	var existingTag module.Tag
+	var existingTag model.Tag
 	err := dao.db.Where("tag = ?", tag).First(&existingTag).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -76,7 +76,7 @@ func (dao *TagDao) GetTidByTag(tag string) (int64, error) {
 }
 
 func (dao *TagDao) GetTagByTid(tid int64) (string, error) {
-	var existingTag module.Tag
+	var existingTag model.Tag
 	err := dao.db.Where("tid = ?", tid).First(&existingTag).Error
 	if err != nil {
 		return "", err

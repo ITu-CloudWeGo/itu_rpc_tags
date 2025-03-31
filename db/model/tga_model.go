@@ -1,4 +1,4 @@
-package module
+package model
 
 type Tag struct {
 	Tid int64  `gorm:"column:pid;primaryKey;autoIncrement" json:"Pid"`
